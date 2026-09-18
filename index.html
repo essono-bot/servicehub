@@ -115,7 +115,7 @@
 <div id="details-service" style="display:none;">
   <h2 id="nom-service"></h2>
   <p id="description-service"></p>
-  <button>Contacter</button>
+  <button onclick="afficherFormulaire()">Contacter</button>
 </div>
     <script>
 document.querySelectorAll('.carte').forEach(carte => {
@@ -128,5 +128,18 @@ document.querySelectorAll('.carte').forEach(carte => {
     document.getElementById('details-service').style.display = 'block';
   });
 });
-</script></body>
+function afficherFormulaire() {
+  const details = document.getElementById('details-service');
+
+  details.innerHTML += `
+    <div>
+      <h3>Contacter le prestataire</h3>
+      <input type="text" placeholder="Votre nom">
+      <br><br>
+      <textarea placeholder="Votre message"></textarea>
+      <br><br>
+      <button>Envoyer</button>
+    </div>
+  `;
+        }</script></body>
 </html>
