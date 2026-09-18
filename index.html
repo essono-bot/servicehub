@@ -112,10 +112,20 @@
         <p>Création de visuels pour les réseaux sociaux.</p>
     </div>
 </section>
-<script>
+<div id="details-service" style="display:none;">
+  <h2 id="nom-service"></h2>
+  <p id="description-service"></p>
+  <button>Contacter</button>
+</div>
+    <script>
 document.querySelectorAll('.carte').forEach(carte => {
   carte.addEventListener('click', function() {
-    alert('Vous avez sélectionné : ' + carte.querySelector('h3').textContent);
+    const nom = carte.querySelector('h3').textContent;
+    const description = carte.querySelector('p').textContent;
+
+    document.getElementById('nom-service').textContent = nom;
+    document.getElementById('description-service').textContent = description;
+    document.getElementById('details-service').style.display = 'block';
   });
 });
 </script></body>
