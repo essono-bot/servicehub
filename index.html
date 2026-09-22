@@ -122,8 +122,8 @@
   <p id="description-service"></p>
   <button onclick="afficherFormulaire()">Contacter</button>
 </div>
-    <script>
-document.querySelectorAll('.carte').forEach(carte => {
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>document.querySelectorAll('.carte').forEach(carte => {
   carte.addEventListener('click', function() {
     const nom = carte.querySelector('h3').textContent;
     const description = carte.querySelector('p').textContent;
