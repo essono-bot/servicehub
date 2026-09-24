@@ -23,7 +23,7 @@
             text-align: center;
             padding: 60px 20px;
             background: white;
-        }
+        
 
         .hero h1 {
             font-size: 40px;
@@ -123,6 +123,12 @@
   <button onclick="afficherFormulaire()">Contacter</button>
 </div>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+const supabaseClient = window.supabase.createClient(
+  "https://wjacmmytcirfhdsiqzpm.supabase.co",
+  sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnXOvV
+);
+    </script>
 <script>document.querySelectorAll('.carte').forEach(carte => {
   carte.addEventListener('click', function() {
     const nom = carte.querySelector('h3').textContent;
@@ -146,7 +152,30 @@ function afficherFormulaire() {
       <button onclick="envoyerMessage()">Envoyer</button>
     </div>
   `;
-        }function envoyerMessage() {
+    async function envoyerMessage() {
+  const nom = document.getElementById("nom-client").value;
+  const message = document.getElementById("message-client").value;
+
+  if (!nom || !message) {
+    alert("Veuillez remplir votre nom et votre message.");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("messages")
+    .insert([
+      {
+        nom: nom,
+        message: message,
+        prestataire: "Jean - Créateur de logos"
+      }
+    ]);
+
+  if (error) {
+    alert("Erreur lors de l'envoi : " + error.message);
+    return;
+  }
+
   alert("Votre message a été envoyé !");
-        }</script></body>
+    }
 </html>
