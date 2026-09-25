@@ -1,178 +1,86 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ServiceHub</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #f5f5f5;
-        }
-
-        header {
-            background: #222;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-        
-
-        .hero h1 {
-            font-size: 40px;
-        }
-
-        .hero p {
-            font-size: 18px;
-        }
-
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .services {
-            padding: 30px;
-            text-align: center;
-        }
-
-        .card {
-            background: white;
-            display: inline-block;
-            width: 220px;
-            margin: 10px;
-            padding: 25px;
-            border-radius: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceHub</title>
+<style>
+  body{font-family: Arial, sans-serif; margin:0; background:#f5f5f5;}
+  header{background:#222; color:white; padding:20px; text-align:center;}
+  .hero{text-align:center; padding:60px 20px; background:white;}
+  .hero h1{font-size:40px;}
+  button{padding:12px 25px; border:none; border-radius:6px; background:#222; color:white; cursor:pointer; font-size:16px;}
+  button:hover{background:black;}
+  .services{text-align:center; padding:30px;}
+  .carte{display:inline-block; background:white; width:220px; margin:10px; padding:20px; border-radius:10px; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+  .carte:hover{transform:scale(1.05);}
+  #details-service{display:none; background:white; margin:20px; padding:20px; border-radius:10px; text-align:center;}
+  input, textarea{width:90%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:5px;}
+</style>
 </head>
-
 <body>
 
-<header>
-    <h2>ServiceHub</h2>
-</header>
+<header><h1>ServiceHub</h1></header>
 
 <section class="hero">
-    <h1>Trouve le service qu'il te faut</h1>
-
-    <p>
-        Découvre des personnes capables de réaliser
-        tes projets.
-    </p>
-
-    <button onclick="document.querySelector('.services').scrollIntoView({behavior:'smooth'})">Voir les services</button>
+  <h1>Trouve le service qu'il te faut</h1>
+  <p>Découvre des personnes capables de réaliser tes projets.</p>
+  <button onclick="document.querySelector('.services').scrollIntoView({behavior:'smooth'})">Voir les services</button>
 </section>
 
 <section class="services">
-
-    <h2>Nos catégories</h2>
-
-    <div class="carte" onclick="alert('Services Design')">
-    <h3>🎨 Design</h3>
-    <p>Création d'affiches et de logos.</p>
-    </div>
-
-    <div class="carte">
-        <h3>🎬 Vidéo</h3>
-        <p>Montage et création vidéo.</p>
-    </div>
-
-    <div class="carte">
-        <h3>💻 Informatique</h3>
-        <p>Sites web et services numériques.</p>
-    </div>
-
+  <h2>Nos catégories</h2>
+  <div class="carte" data-categorie="design"><h3>Design</h3><p>Création d'affiches et de logos.</p></div>
+  <div class="carte" data-categorie="video"><h3>Vidéo</h3><p>Montage et création vidéo.</p></div>
+  <div class="carte" data-categorie="info"><h3>Informatique</h3><p>Sites web et services numériques.</p></div>
 </section>
-<section id="design-services">
-    <h2>Services Design</h2>
 
-    <div class="carte">
-        <h3>🎨 Création de logo</h3>
-        <p>Création de logos pour entreprises et projets.</p>
-    </div>
-
-    <div class="carte">
-        <h3>🖼️ Création d'affiches</h3>
-        <p>Création d'affiches pour événements et publicités.</p>
-    </div>
-
-    <div class="carte">
-        <h3>📱 Design pour réseaux sociaux</h3>
-        <p>Création de visuels pour les réseaux sociaux.</p>
-    </div>
-    <div class="prestataire">
-  <h3>👤 Jean — Créateur de logos</h3>
-  <p>Spécialisé dans la création de logos professionnels.</p>
-<button onclick="afficherFormulaire()">Contacter ce prestataire</button>
-    </div>
-</section>
-<div id="details-service" style="display:none;">
+<section id="details-service">
   <h2 id="nom-service"></h2>
   <p id="description-service"></p>
-  <button onclick="afficherFormulaire()">Contacter</button>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <div id="liste-prestataires">
+    <div class="carte"><h3>Jean - Créateur de logos</h3><p>Spécialisé dans la création de logos pro.</p></div>
+  </div>
+  <button onclick="afficherFormulaire()">Contacter ce prestataire</button>
+  
+  <div id="formulaire-contact" style="display:none; margin-top:20px;">
+    <h3>Envoyer un message</h3>
+    <input id="nom-client" type="text" placeholder="Votre nom">
+    <textarea id="message-client" placeholder="Votre message"></textarea><br>
+    <button onclick="envoyerMessage()">Envoyer</button>
+  </div>
+</section>
 
-<script>document.querySelectorAll('.carte').forEach(carte => {
+<script>
+// 1. Quand on clique sur une catégorie
+document.querySelectorAll('.services .carte').forEach(carte => {
   carte.addEventListener('click', function() {
-    const nom = carte.querySelector('h3').textContent;
-    const description = carte.querySelector('p').textContent;
-
+    const nom = this.querySelector('h3').textContent;
     document.getElementById('nom-service').textContent = nom;
-    document.getElementById('description-service').textContent = description;
+    document.getElementById('description-service').textContent = "Services disponibles pour : " + nom;
     document.getElementById('details-service').style.display = 'block';
+    document.getElementById('details-service').scrollIntoView({behavior:'smooth'});
   });
 });
-function afficherFormulaire() {
-  const details = document.getElementById('details-service');
 
-  details.innerHTML += `
-    <div>
-      <h3>Contacter le prestataire</h3>
-    <input id="nom-client" type="text" placeholder="Votre nom">
-<br><br>
-<textarea id="message-client" placeholder="Votre message"></textarea>
-      <br><br>
-    <button type="button" onclick="envoyerMessage()">Envoyer</button>
-    </div>
-  `;
-    async function envoyerMessage() {
-  const nom = document.getElementById("nom-client").value;
-  const message = document.getElementById("message-client").value;
+function afficherFormulaire(){
+  document.getElementById('formulaire-contact').style.display = 'block';
+}
 
-  if (!nom || !message) {
+function envoyerMessage(){
+  const nom = document.getElementById('nom-client').value;
+  const message = document.getElementById('message-client').value;
+  if(nom === "" || message === ""){
     alert("Veuillez remplir votre nom et votre message.");
     return;
   }
-
-  const { error } = await supabaseClient
-    .from("messages")
-    .insert([
-      {
-        nom: nom,
-        message: message,
-        prestataire: "Jean - Créateur de logos"
-      }
-    ]);
-
-  if (error) {
-    alert("Erreur lors de l'envoi : " + error.message);
-    return;
-  }
-
-  alert("Votre message a été envoyé !");
-    }
+  alert("Merci " + nom + " ! Ton message a bien été envoyé : " + message);
+  // Ici plus tard on mettra Supabase
+  document.getElementById('nom-client').value = "";
+  document.getElementById('message-client').value = "";
+}
 </script>
+
 </body>
 </html>
+
