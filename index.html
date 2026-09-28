@@ -73,18 +73,35 @@ function afficherFormulaire(){
   document.getElementById('formulaire-contact').style.display = 'block';
 }
 
-function envoyerMessage(){
-  const nom = document.getElementById('nom-client').value;
-  const message = document.getElementById('message-client').value;
+async function envoyerMessage(){
+  const nom = document.getElementById('nom-client').value.trim();
+  const message = document.getElementById('message-client').value.trim();
+
   if(nom === "" || message === ""){
     alert("Veuillez remplir votre nom et votre message.");
     return;
   }
-  alert("Merci " + nom + " ! Ton message a bien été envoyé : " + message);
-  // Ici plus tard on mettra Supabase
+
+  const { error } = await supabaseClient
+    .from('messages')
+    .insert([
+      {
+        nom: nom,
+        message: message,
+        prestataire: "Jean - Créateur de logos"
+      }
+    ]);
+
+  if(error){
+    alert("Erreur lors de l'envoi : " + error.message);
+    return;
+  }
+
+  alert("Merci " + nom + " ! Ton message a bien été envoyé au prestataire.");
+
   document.getElementById('nom-client').value = "";
   document.getElementById('message-client').value = "";
-}
+          }
 </script>
 
 </body>
