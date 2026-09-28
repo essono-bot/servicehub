@@ -51,8 +51,14 @@
   </div>
 </section>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 1. Quand on clique sur une catégorie
+const supabaseClient = window.supabase.createClient(
+  "https://wjacmmytcirfhdsiqzpm.supabase.co",
+  sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnXOvV
+);
+</script>
+<script>// 1. Quand on clique sur une catégorie
 document.querySelectorAll('.services .carte').forEach(carte => {
   carte.addEventListener('click', function() {
     const nom = this.querySelector('h3').textContent;
