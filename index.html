@@ -23,6 +23,7 @@
     }
     .hero h1 {
       font-size: 40px;
+      margin-bottom: 10px;
     }
     button {
       padding: 12px 25px;
@@ -32,24 +33,26 @@
       color: white;
       cursor: pointer;
       font-size: 16px;
+      margin-top: 10px;
     }
     button:hover {
-      background: black;
+      background: #000;
     }
     .services {
       text-align: center;
-      padding: 30px;
+      padding: 40px 20px;
     }
     .carte {
       display: inline-block;
       background: white;
       width: 220px;
-      margin: 10px;
+      margin: 12px;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       cursor: pointer;
       transition: transform 0.2s;
+      vertical-align: top;
     }
     .carte:hover {
       transform: scale(1.05);
@@ -57,20 +60,26 @@
     #service-details {
       display: none;
       background: white;
-      margin: 20px;
-      padding: 20px;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 25px;
       border-radius: 10px;
-    }
-    input, textarea {
-      width: 90%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     #formulaire-contact {
       display: none;
-      margin-top: 20px;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    input, textarea {
+      width: 95%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
     }
   </style>
 </head>
@@ -80,6 +89,7 @@
     <h1>ServiceHub</h1>
   </header>
 
+  <!-- Section d'accueil -->
   <section class="hero">
     <h1>Trouve le service qu'il te faut</h1>
     <p>Découvrez des personnes capables de réaliser vos projets.</p>
@@ -88,32 +98,35 @@
     </button>
   </section>
 
+  <!-- Catégories -->
   <section class="services">
     <h2>Nos catégories</h2>
+
     <div class="carte" data-categorie="Conception">
       <h3>Conception</h3>
       <p>Création d'affiches et de logos.</p>
     </div>
+
     <div class="carte" data-categorie="Vidéo">
       <h3>Vidéo</h3>
       <p>Montage et création vidéo.</p>
     </div>
+
     <div class="carte" data-categorie="Informatique">
       <h3>Informatique</h3>
       <p>Sites web et services numériques.</p>
     </div>
   </section>
 
+  <!-- Détails du service + formulaire -->
   <section id="service-details">
     <h2 id="nom-service"></h2>
     <p id="service-description"></p>
 
-    <div id="liste-prestataires">
-      <div class="carte">
-        <h3>Jean - Créateur de logos</h3>
-        <p>Spécialisé dans la création de logos pro.</p>
-        <button onclick="afficherFormulaire()">Contacter ce prestataire</button>
-      </div>
+    <div class="carte" style="cursor: default;">
+      <h3>Jean - Créateur de logos</h3>
+      <p>Spécialisé dans la création de logos professionnels.</p>
+      <button onclick="afficherFormulaire()">Contacter ce prestataire</button>
     </div>
 
     <div id="formulaire-contact">
@@ -125,23 +138,26 @@
     </div>
   </section>
 
-  <!-- Supabase -->
+  <!-- ==================== SUPABASE ==================== -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // Configuration Supabase
-    const supabase = window.supabase.createClient(
-      "https://wjacmmytcirfhdsiqzpm.supabase.co",
-      "sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnX0vV"
-    );
+    // sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnXOvV
+    // 👉 COLLE ICI TON URL ET TA CLÉ PUBLIQUE SUPABASE
+    // ==================================================
+    const SUPABASE_URL = "https://xxxxxxxx.supabase.co";          // ← colle ton URL ici
+    const SUPABASE_ANON_KEY = "ta_cle_publique_ici";               // ← colle ta clé publique ici
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // Quand on clique sur une catégorie
     document.querySelectorAll('.carte[data-categorie]').forEach(carte => {
       carte.addEventListener('click', () => {
         const nom = carte.dataset.categorie;
+
         document.getElementById('nom-service').textContent = nom;
         document.getElementById('service-description').textContent = "Services disponibles pour : " + nom;
         document.getElementById('service-details').style.display = 'block';
-        document.getElementById('service-details').scrollIntoView({behavior: 'smooth'});
+        document.getElementById('service-details').scrollIntoView({ behavior: 'smooth' });
       });
     });
 
@@ -172,6 +188,7 @@
 
       if (error) {
         alert("Erreur lors de l'envoi : " + error.message);
+        console.error(error);
         return;
       }
 
@@ -182,4 +199,4 @@
   </script>
 
 </body>
-    </html>
+</html>
