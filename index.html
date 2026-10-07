@@ -144,8 +144,7 @@
     const SUPABASE_URL = "https://wjacmmytcirfhdsiqzpm.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnXOvV";
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     // Quand on clique sur une catégorie
     document.querySelectorAll('.carte[data-categorie]').forEach(carte => {
       carte.addEventListener('click', () => {
@@ -174,7 +173,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnXOvV";
       }
 
       const { error } = await supabase
-        .from('messages')
+        const { error } = await db
         .insert([
           {
             nom: nom,
