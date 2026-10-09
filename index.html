@@ -1,198 +1,180 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ServiceHub</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-    }
-    header {
-      background: #222;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    .hero {
-      text-align: center;
-      padding: 60px 20px;
-      background: white;
-    }
-    .hero h1 {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-    button {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 6px;
-      background: #222;
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #000;
-    }
-    .services {
-      text-align: center;
-      padding: 40px 20px;
-    }
-    .carte {
-      display: inline-block;
-      background: white;
-      width: 220px;
-      margin: 12px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: transform 0.2s;
-      vertical-align: top;
-    }
-    .carte:hover {
-      transform: scale(1.05);
-    }
-    #service-details {
-      display: none;
-      background: white;
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    #formulaire-contact {
-      display: none;
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid #ddd;
-    }
-    input, textarea {
-      width: 95%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ServiceHub</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; color: #222; }
+  header { background: #222; color: white; padding: 20px; text-align: center; }
+  .hero { text-align: center; padding: 50px 20px; background: white; }
+  .hero h1 { font-size: 32px; margin: 0 0 10px; }
+  button { padding: 12px 22px; border: none; border-radius: 6px; background: #222; color: white; cursor: pointer; font-size: 16px; }
+  button:disabled { opacity: .5; }
+  section { padding: 30px 20px; max-width: 700px; margin: auto; }
+  .carte { background: white; border-radius: 8px; padding: 16px; margin-bottom: 12px; cursor: pointer; border: 2px solid transparent; }
+  .carte.actif { border-color: #222; }
+  .carte h3 { margin: 0 0 6px; }
+  .prestataire { background: white; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+  .prestataire h3 { margin: 0 0 4px; }
+  .prestataire p { margin: 0 0 10px; color: #555; }
+  #formulaire { display: none; background: white; border-radius: 8px; padding: 20px; }
+  input, textarea { width: 100%; box-sizing: border-box; padding: 10px; margin-bottom: 10px; font-size: 16px; border: 1px solid #bbb; border-radius: 6px; font-family: inherit; }
+  #statut { margin-top: 12px; padding: 12px; border-radius: 6px; display: none; white-space: pre-wrap; }
+  #statut.ok { display: block; background: #d9f2dd; color: #14532d; }
+  #statut.erreur { display: block; background: #fde2e2; color: #7f1d1d; }
+  #config-alerte { display: none; background: #fff3cd; color: #664d03; padding: 14px 20px; text-align: center; }
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>ServiceHub</h1>
-  </header>
+<div id="config-alerte"></div>
 
-  <!-- Section d'accueil -->
-  <section class="hero">
-    <h1>Trouve le service qu'il te faut</h1>
-    <p>Découvrez des personnes capables de réaliser vos projets.</p>
-    <button onclick="document.querySelector('.services').scrollIntoView({behavior: 'smooth'})">
-      Voir les services
-    </button>
-  </section>
+<header><h1>ServiceHub</h1></header>
 
-  <!-- Catégories -->
-  <section class="services">
-    <h2>Nos catégories</h2>
+<div class="hero">
+  <h1>Trouve le service qu'il te faut</h1>
+  <p>Découvre des personnes capables de réaliser tes projets.</p>
+  <button onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Voir les services</button>
+</div>
 
-    <div class="carte" data-categorie="Conception">
-      <h3>Conception</h3>
-      <p>Création d'affiches et de logos.</p>
-    </div>
+<section id="categories">
+  <h2>Choisis une catégorie</h2>
+  <div class="carte" data-categorie="Conception"><h3>Conception</h3><p>Création d'affiches et de logos.</p></div>
+  <div class="carte" data-categorie="Vidéo"><h3>Vidéo</h3><p>Montage et création vidéo.</p></div>
+  <div class="carte" data-categorie="Informatique"><h3>Informatique</h3><p>Sites web et services numériques.</p></div>
+</section>
 
-    <div class="carte" data-categorie="Vidéo">
-      <h3>Vidéo</h3>
-      <p>Montage et création vidéo.</p>
-    </div>
+<section id="prestataires" style="display:none">
+  <h2 id="titre-prestataires"></h2>
+  <div id="liste-prestataires"></div>
+</section>
 
-    <div class="carte" data-categorie="Informatique">
-      <h3>Informatique</h3>
-      <p>Sites web et services numériques.</p>
-    </div>
-  </section>
+<section id="zone-formulaire">
+  <div id="formulaire">
+    <h3 id="titre-formulaire">Envoyer une demande</h3>
+    <input type="text" id="nom-client" placeholder="Ton nom">
+    <textarea id="client-message" rows="4" placeholder="Ta demande + ton numéro ou email pour te répondre"></textarea>
+    <button id="btn-envoyer" onclick="envoyerMessage()">Envoyer</button>
+    <div id="statut"></div>
+  </div>
+</section>
 
-  <!-- Détails du service + formulaire -->
-  <section id="service-details">
-    <h2 id="nom-service"></h2>
-    <p id="service-description"></p>
-
-    <div class="carte" style="cursor: default;">
-      <h3>Jean - Créateur de logos</h3>
-      <p>Spécialisé dans la création de logos professionnels.</p>
-      <button onclick="afficherFormulaire()">Contacter ce prestataire</button>
-    </div>
-
-    <div id="formulaire-contact">
-      <h3>Envoyer un message</h3>
-      <input type="text" id="nom-client" placeholder="Votre nom">
-      <textarea id="client-message" placeholder="Votre message" rows="4"></textarea>
-      <br>
-      <button onclick="envoyerMessage()">Envoyer</button>
-    </div>
-  </section>
-
-  <!-- ==================== SUPABASE ==================== -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://wjacmmytcirfhdsiqzpm.supabase.co";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Affiche toute erreur de script en haut de la page
+window.addEventListener("error", function (e) {
+  var a = document.getElementById("config-alerte");
+  a.style.display = "block";
+  a.style.background = "#fde2e2";
+  a.style.color = "#7f1d1d";
+  a.textContent = "Erreur : " + e.message + " (ligne " + e.lineno + ")";
+});
+// ============ À REMPLIR : Supabase > Project Settings > API ============
+const SUPABASE_URL = "https://wjacmmytcirfhdsiqzpm.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_KlIfWqWh56NVBGmcCRHu7Q_uvVnXOvV";
+// =======================================================================
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    // Quand on clique sur une catégorie
-    document.querySelectorAll('.carte[data-categorie]').forEach(carte => {
-      carte.addEventListener('click', () => {
-        const nom = carte.dataset.categorie;
+// Liste des prestataires (à remplacer par les vrais plus tard)
+const PRESTATAIRES = [
+  { nom: "Jean", metier: "Créateur de logos", categorie: "Conception", description: "Logos et affiches professionnels." },
+  { nom: "Awa",  metier: "Monteuse vidéo",    categorie: "Vidéo",      description: "Montage de vidéos pour réseaux sociaux." },
+  { nom: "Koffi", metier: "Développeur web",   categorie: "Informatique", description: "Création de sites et petites applications." }
+];
 
-        document.getElementById('nom-service').textContent = nom;
-        document.getElementById('service-description').textContent = "Services disponibles pour : " + nom;
-        document.getElementById('service-details').style.display = 'block';
-        document.getElementById('service-details').scrollIntoView({ behavior: 'smooth' });
-      });
+let supabaseClient = null;
+let prestataireChoisi = null;
+
+const configOk = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("xxxxxxxx") && !SUPABASE_ANON_KEY.includes("ta_cle");
+
+if (!configOk) {
+  const a = document.getElementById("config-alerte");
+  a.style.display = "block";
+  a.textContent = "Supabase n'est pas configuré : remplace SUPABASE_URL et SUPABASE_ANON_KEY dans index.html.";
+} else if (!window.supabase) {
+  const a = document.getElementById("config-alerte");
+  a.style.display = "block";
+  a.textContent = "La bibliothèque Supabase ne s'est pas chargée. Vérifie ta connexion internet.";
+} else {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+function afficherStatut(type, texte) {
+  const s = document.getElementById("statut");
+  s.className = type;
+  s.textContent = texte;
+}
+
+document.querySelectorAll(".carte").forEach(carte => {
+  carte.addEventListener("click", () => {
+    document.querySelectorAll(".carte").forEach(c => c.classList.remove("actif"));
+    carte.classList.add("actif");
+    const cat = carte.dataset.categorie;
+    const liste = document.getElementById("liste-prestataires");
+    liste.innerHTML = "";
+    PRESTATAIRES.filter(p => p.categorie === cat).forEach(p => {
+      const div = document.createElement("div");
+      div.className = "prestataire";
+      div.innerHTML = "<h3></h3><p></p>";
+      div.querySelector("h3").textContent = p.nom + " – " + p.metier;
+      div.querySelector("p").textContent = p.description;
+      const b = document.createElement("button");
+      b.textContent = "Contacter";
+      b.onclick = () => ouvrirFormulaire(p);
+      div.appendChild(b);
+      liste.appendChild(div);
     });
+    document.getElementById("titre-prestataires").textContent = "Prestataires : " + cat;
+    document.getElementById("prestataires").style.display = "block";
+    document.getElementById("prestataires").scrollIntoView({ behavior: "smooth" });
+  });
+});
 
-    // Afficher le formulaire de contact
-    function afficherFormulaire() {
-      document.getElementById('formulaire-contact').style.display = 'block';
+function ouvrirFormulaire(p) {
+  prestataireChoisi = p;
+  document.getElementById("titre-formulaire").textContent = "Écrire à " + p.nom + " (" + p.metier + ")";
+  document.getElementById("formulaire").style.display = "block";
+  document.getElementById("statut").className = "";
+  document.getElementById("formulaire").scrollIntoView({ behavior: "smooth" });
+}
+
+async function envoyerMessage() {
+  const nom = document.getElementById("nom-client").value.trim();
+  const message = document.getElementById("client-message").value.trim();
+  const btn = document.getElementById("btn-envoyer");
+
+  if (!nom || !message) { afficherStatut("erreur", "Remplis ton nom et ton message."); return; }
+  if (!supabaseClient) { afficherStatut("erreur", "Envoi impossible : Supabase n'est pas configuré (voir le bandeau jaune en haut)."); return; }
+
+  btn.disabled = true;
+  afficherStatut("ok", "Envoi en cours...");
+
+  try {
+    const { error } = await supabaseClient.from("messages").insert([{
+      nom: nom,
+      message: message,
+      service: prestataireChoisi ? prestataireChoisi.nom + " - " + prestataireChoisi.metier : "Non précisé"
+    }]);
+
+    if (error) {
+      console.error(error);
+      let aide = "";
+      if (error.code === "42501") aide = "\n→ Sécurité RLS : ajoute la règle d'insertion pour 'anon' (SQL donné par Claude).";
+      else if (error.code === "42P01" || (error.message || "").includes("does not exist")) aide = "\n→ La table 'messages' n'existe pas dans Supabase.";
+      else if (error.code === "PGRST204" || (error.message || "").includes("column")) aide = "\n→ Une colonne manque : la table doit avoir nom, message, service.";
+      else if ((error.message || "").toLowerCase().includes("api key")) aide = "\n→ La clé publique est incorrecte.";
+      afficherStatut("erreur", "Échec de l'envoi.\nDétail : " + error.message + " (code " + (error.code || "?") + ")" + aide);
+    } else {
+      afficherStatut("ok", "Message envoyé. Le prestataire te répondra bientôt.");
+      document.getElementById("nom-client").value = "";
+      document.getElementById("client-message").value = "";
     }
-
-    // Envoyer le message vers Supabase
-    async function envoyerMessage() {
-      const nom = document.getElementById('nom-client').value.trim();
-      const message = document.getElementById('client-message').value.trim();
-
-      if (nom === "" || message === "") {
-        alert("Veuillez remplir votre nom et votre message.");
-        return;
-      }
-
-      const { error } = await supabase
-        const { error } = await db
-        .insert([
-          {
-            nom: nom,
-            message: message,
-            service: "Jean - Créateur de logos"
-          }
-        ]);
-
-      if (error) {
-        alert("Erreur lors de l'envoi : " + error.message);
-        console.error(error);
-        return;
-      }
-
-      alert("Merci " + nom + " ! Ton message a bien été envoyé au prestataire.");
-      document.getElementById('nom-client').value = "";
-      document.getElementById('client-message').value = "";
-    }
-  </script>
-
+  } catch (e) {
+    console.error(e);
+    afficherStatut("erreur", "Impossible de joindre Supabase.\nDétail : " + e.message + "\n→ Vérifie que SUPABASE_URL est exact (sans espace) et ta connexion.");
+  }
+  btn.disabled = false;
+}
+</script>
 </body>
 </html>
